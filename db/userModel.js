@@ -1,7 +1,15 @@
 const mongoose = require("mongoose");
 
 // user schema
+
 const UserSchema = new mongoose.Schema({
+  // Name field
+  name: {
+    type: String,
+    required: [true, "Please provide a Name!"],
+    unique: false,
+  },
+  
   // email field
   email: {
     type: String,
@@ -19,3 +27,4 @@ const UserSchema = new mongoose.Schema({
 
 // export UserSchema
 module.exports = mongoose.model.Users || mongoose.model("Users", UserSchema);
+

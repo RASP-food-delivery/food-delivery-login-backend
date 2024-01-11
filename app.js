@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 // require database connection
 const dbConnect = require("./db/dbConnect");
 const User = require("./db/userModel");
+const Vendor = require("./db/vendorModel");
 const auth = require("./auth");
 
 // execute database connection
@@ -35,14 +36,17 @@ app.get("/", (request, response, next) => {
   next();
 });
 
+
 // register endpoint
 app.post("/register", (request, response) => {
   // hash the password
+  console.log("body that came was:", request.body)
   bcrypt
     .hash(request.body.password, 10)
     .then((hashedPassword) => {
       // create a new user instance and collect the data
       const user = new User({
+        name: request.body.name,
         email: request.body.email,
         password: hashedPassword,
       });
@@ -57,7 +61,7 @@ app.post("/register", (request, response) => {
             result,
           });
         })
-        // catch erroe if the new user wasn't added successfully to the database
+        // catch error if the new user wasn't added successfully to the database
         .catch((error) => {
           response.status(500).send({
             message: "Error creating user",
