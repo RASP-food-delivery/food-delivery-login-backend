@@ -40,17 +40,38 @@ app.get("/", (request, response, next) => {
 // register endpoint
 app.post("/register", (request, response) => {
   // hash the password
-  console.log("body that came was:", request.body)
+  console.log("body that came was:", request.body);
+
+  const userRole = request.body.role;
+  
   bcrypt
     .hash(request.body.password, 10)
     .then((hashedPassword) => {
-      // create a new user instance and collect the data
-      const user = new User({
-        name: request.body.name,
-        email: request.body.email,
-        password: hashedPassword,
-      });
-
+      // create a new user instance and collect the data based on the role
+      let user;
+      if(userRole=="user"){
+        user = new User({
+          name: request.body.name,
+          email: request.body.email,
+          password: hashedPassword,
+        });
+      }
+      else if(userRole=="vendor"){
+        user = new Vendor({
+          name: request.body.name,
+          shopname: request.body.shopname,
+          phone: request.body.phone,
+          password: hashedPassword,
+        });
+      }
+      else{
+        return response.status(400).send({
+          message: "Role not specified"
+        });
+      }
+      console.log("will save user ", user)
+      
+    
       // save the new user
       user
         .save()
@@ -78,12 +99,31 @@ app.post("/register", (request, response) => {
     });
 });
 
+
+
 // login endpoint
 app.post("/login", (request, response) => {
   // check if email exists
-  User.findOne({ email: request.body.email })
+  const userRole = request.body.role;
+  let search, DB;
+  if(userRole == "user"){
+    search = { email: request.body.email };
+    DB = User;
+  }
+  else if(userRole == "vendor"){
+    search = { phone: request.body.phone };
+    DB = Vendor;
+  }
+  else{
+    return response.status(400).send({
+      message: "Role not specified"
+    });
+  }
 
-    // if email exists
+  
+  DB.findOne(search)
+
+    // if email/phone exists
     .then((user) => {
       // compare the password entered and the hashed password found
       bcrypt
@@ -105,6 +145,7 @@ app.post("/login", (request, response) => {
             {
               userId: user._id,
               userEmail: user.email,
+              // userPhone : user.phone
             },
             "RANDOM-TOKEN",
             { expiresIn: "24h" }
@@ -114,7 +155,8 @@ app.post("/login", (request, response) => {
           response.status(200).send({
             message: "Login Successful",
             email: user.email,
-            token,
+            // phone: user.phone,
+            token: token,
           });
         })
         // catch error if password do not match
