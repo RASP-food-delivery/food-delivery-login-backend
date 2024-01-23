@@ -23,6 +23,12 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide a password!"],
     unique: false,
   },
+
+  // VerificationStatus
+  isVerified : {
+    type : Boolean,
+    default : false,
+  },
 });
 
 // export UserSchema
