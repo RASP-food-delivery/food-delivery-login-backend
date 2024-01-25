@@ -117,9 +117,9 @@ module.exports.login = (request, response, next) => {
             //   create JWT token
             const token = jwt.sign(
               {
-                userId: user._id,
-                userID: (userRole == "user")?user.email : user.phone,
-                // userPhone : user.phone
+                id: user._id,
+                userID: (userRole == "user")?user.email : user.shopname,
+                userRole: userRole
               },
               "RANDOM-TOKEN",
               { expiresIn: "60h" }
