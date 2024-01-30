@@ -33,7 +33,8 @@ module.exports.register = async (request, response, next) => {
 
         }
           else if(userRole==="vendor"){
-            user = await Vendor.create({
+            console.log('runs')
+           user = await Vendor.create({
               name: request.body.name,
               shopname: request.body.shopname,
               phone: request.body.phone,
@@ -49,17 +50,18 @@ module.exports.register = async (request, response, next) => {
             // console.log("will save user ", user)
             // console.log("will save", userotp)
             // save the new user
-            if(userRole === "user")
+            if (userRole === "user")
             {
               await userotp.save();
             }
-            if(userRole === "vendor")
-            {
-            }
+
             await user.save()
               // return success if the new user is added to the database successfully
               .then((result) => {
-                sendOtp(email, OTP);
+                if(userRole === "user")
+                {
+                  sendOtp(email, OTP);
+                }
                 response.status(201).send({
                   message: "User Created Successfully",
                   result,
@@ -123,9 +125,9 @@ module.exports.login = (request, response, next) => {
             //   create JWT token
             const token = jwt.sign(
               {
-                userId: user._id,
-                userID: (userRole == "user")?user.email : user.phone,
-                // userPhone : user.phone
+                id: user._id,
+                userID: (userRole == "user")?user.email : user.shopname,
+                userRole: userRole
               },
               "RANDOM-TOKEN",
               { expiresIn: "60h" }

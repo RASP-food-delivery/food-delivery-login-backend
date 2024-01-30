@@ -37,14 +37,16 @@ const errorHandler = (error) => {
   }
 };
 
-// Variables are processed first thus this is equivalent of calling it on top.
-const server = http.createServer(app);
-
-server.on('error', errorHandler);
-server.on('listening', () => {
+const serverCreate = (app, port) => {
+  const server = http.createServer(app);
+  server.on('error', errorHandler);
+  server.on('listening', () => {
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
   console.log('Listening on ' + bind);
 });
 
 server.listen(port);
+}
+
+serverCreate(app, port);
