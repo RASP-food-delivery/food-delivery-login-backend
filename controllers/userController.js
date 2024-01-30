@@ -1,6 +1,6 @@
 const User = require("../db/models/userModel")
 const Vendor = require("../db/models/vendorModel")
-const Otp = require("../db/models/otpVerificationmodel")
+const Otp = require("../db/models/emailOtpVerificationmodel")
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -49,7 +49,13 @@ module.exports.register = async (request, response, next) => {
             // console.log("will save user ", user)
             // console.log("will save", userotp)
             // save the new user
-            await userotp.save();
+            if(userRole === "user")
+            {
+              await userotp.save();
+            }
+            if(userRole === "vendor")
+            {
+            }
             await user.save()
               // return success if the new user is added to the database successfully
               .then((result) => {
@@ -134,7 +140,6 @@ module.exports.login = (request, response, next) => {
           })
           // catch error if password do not match
           .catch((error) => {
-            console.log("password")
             return response.status(400).send({
               message: "Passwords does not match",
               error,
@@ -143,7 +148,6 @@ module.exports.login = (request, response, next) => {
       })
       // catch error if email does not exist
       .catch((e) => {
-        console.log("email")
         return response.status(404).send({
           message: "Email not found",
           e,

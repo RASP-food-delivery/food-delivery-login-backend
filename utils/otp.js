@@ -31,4 +31,9 @@ const sendOtp = (email, OTP) =>{
     })
 };
 
+
+const sendOtpV = () =>
+{
+    
+}
 module.exports = { generateOtp, sendOtp }
