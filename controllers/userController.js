@@ -10,7 +10,7 @@ const { generateOtp, sendOtp } = require("../utils/otp")
 module.exports.register = async (request, response, next) => {
   try {
     const userRole = request.body.role;
-    const email = request.body.email;
+    // const email = request.body.email;
     // hash the password
       const hashedPassword = await bcrypt.hash(request.body.password, 10)
         let user, OTP, hashedOTP, userotp;
@@ -78,7 +78,7 @@ module.exports.register = async (request, response, next) => {
   {
     response.status(500).send({
       message: "Password was not hashed successfully",
-      error,
+      error : error,
     })
   }    
   };
@@ -107,7 +107,7 @@ module.exports.login = (request, response, next) => {
   
       // if email/phone exists
       .then((user) => {
-         console.log(user);
+        //  console.log(user);
         // compare the password entered and the hashed password found
         bcrypt.compare(request.body.password, user.password)
   
@@ -144,15 +144,15 @@ module.exports.login = (request, response, next) => {
           .catch((error) => {
             return response.status(400).send({
               message: "Passwords does not match",
-              error,
+              error : error,
             });
           });
       })
-      // catch error if email does not exist
+      // catch error if email/phone does not exist
       .catch((e) => {
-        return response.status(404).send({
-          message: "Email not found",
-          e,
+        return response.status(400).send({
+          message: "Email/ Phone not found",
+          error : e,
         });
       });
   };

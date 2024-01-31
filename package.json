@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/mocha/bin/mocha.js",
     "start": "nodemon index.js"
   },
   "author": "",
@@ -12,15 +12,18 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "chai": "^4.0.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "heroku": "^7.46.0",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^10.2.0",
     "mongoose": "^5.10.5",
     "nodemailer": "^6.9.8",
-    "otp-generator": "^4.0.1"
+    "otp-generator": "^4.0.1",
+    "supertest": "^6.3.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
