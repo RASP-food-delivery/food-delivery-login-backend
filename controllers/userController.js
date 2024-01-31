@@ -10,7 +10,7 @@ const { generateOtp, sendOtp } = require("../utils/otp")
 module.exports.register = async (request, response, next) => {
   try {
     const userRole = request.body.role;
-    // const email = request.body.email;
+    const email = request.body.email;
     // hash the password
       const hashedPassword = await bcrypt.hash(request.body.password, 10)
         let user, OTP, hashedOTP, userotp;
