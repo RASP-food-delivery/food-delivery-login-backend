@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const root = process.env.FIREBASE_URL;
+
 // Vendor schema
 
 const VendorSchema = new mongoose.Schema({
@@ -30,6 +32,19 @@ const VendorSchema = new mongoose.Schema({
     required: [true, "Please provide a password!"],
     unique: false,
   },
+  img: {
+    type: String,
+    get: v => `${root}${v}`,
+    default: "unavailable.jpg?alt=media&token=6633cfd8-020f-4980-b895-b7ee78ff61bb"
+  },
+  isVerified : {
+    type : Boolean,
+    default : false,
+  }
+},
+{
+    toObject : {getters: true},
+    toJSON : {getters: true}
 });
 
 // export VendorSchema
