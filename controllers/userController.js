@@ -1,5 +1,6 @@
 const User = require("../db/models/userModel")
 const Vendor = require("../db/models/vendorModel")
+const Admin = require("../db/models/adminModel")
 const Otp = require("../db/models/emailOtpVerificationmodel")
 
 const bcrypt = require("bcrypt");
@@ -39,7 +40,15 @@ module.exports.register = async (request, response, next) => {
               shopname: request.body.shopname,
               phone: request.body.phone,
               password: hashedPassword,
+              isVerified: false
             });
+          }
+          else if(userRole==="admin"){
+            user = await Admin.create({
+              name: request.body.name,
+              email: request.body.email,
+              password: hashedPassword
+            })
           }
           else{
             // 400 Bad Request : The server cannot or will not process the request due to something that is perceived to be a client error
@@ -95,6 +104,10 @@ module.exports.login = (request, response, next) => {
     else if(userRole == "vendor"){
       search = { phone: request.body.phone };
       DB = Vendor;
+    }
+    else if(userRole==="admin"){
+      search = {email: request.body.email}
+      DB = Admin
     }
     else{
       return response.status(400).send({
