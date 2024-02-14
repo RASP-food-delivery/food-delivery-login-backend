@@ -41,11 +41,11 @@ describe ('POST /api/auth', function() {
     request(app)
         .post('/api/auth/login/')
         .set('Content-type', 'application/json')
-        .send({ role:"user", email: 'shash11@iitbhilai.ac.in', password: 'IIT bhilai 11' })
+        .send({ role:"user", email: 'amrutagokhale@iitbhilai.ac.in', password: 'IIT Bhilai Store 27' })
         .expect(200)
         .end(function(err, res) {
             expect(res.body).to.have.property('message').to.equal('Login Successful');
-            expect(res.body).to.have.property('ID').to.equal('shash11@iitbhilai.ac.in');
+            expect(res.body).to.have.property('ID').to.equal('amrutagokhale@iitbhilai.ac.in');
             token = res.body.token;
             done(err);
       });
@@ -55,11 +55,11 @@ describe ('POST /api/auth', function() {
         request(app)
             .post('/api/auth/login/')
             .set('Content-type', 'application/json')
-            .send({ role:"vendor", phone: '9000000010', password: 'IIT bhilai 10' })
+            .send({ role:"vendor", phone: '8962140798', password: 'IIT Bhilai Store 27' })
             .expect(200)
             .end(function(err, res) {
                 expect(res.body).to.have.property('message').to.equal('Login Successful');
-                expect(res.body).to.have.property('ID').to.equal('9000000010');
+                expect(res.body).to.have.property('ID').to.equal('8962140798');
                 token = res.body.token;
                 done(err);
           });
@@ -92,7 +92,7 @@ describe ('POST /api/auth', function() {
         request(app)
             .post('/api/auth/login/')
             .set('Content-type', 'application/json')
-            .send({ role:"user", email: 'shash11@iitbhilai.ac.in', password: 'wrong password' })
+            .send({ role:"user", email: 'amrutagokhale@iitbhilai.ac.in', password: 'wrong password' })
             .expect(400)
             .end(function(err, res) {
                 expect(res.body).to.have.property('message').to.equal('Passwords does not match');
@@ -103,7 +103,7 @@ describe ('POST /api/auth', function() {
         request(app)
             .post('/api/auth/login/')
             .set('Content-type', 'application/json')
-            .send({ role:"vendor", phone: '9000000010', password: 'wrong password' })
+            .send({ role:"vendor", phone: '8962140798', password: 'wrong password' })
             .expect(400)
             .end(function(err, res) {
                 expect(res.body).to.have.property('message').to.equal('Passwords does not match');
